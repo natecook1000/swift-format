@@ -46,6 +46,7 @@ public struct Configuration: Codable, Equatable {
     case noAssignmentInExpressions
     case multiElementCollectionTrailingCommas
     case reflowMultilineStringLiterals
+    case reflowDocumentationComments
     case indentBlankLines
   }
 
@@ -261,6 +262,8 @@ public struct Configuration: Codable, Equatable {
 
   public var reflowMultilineStringLiterals: MultilineStringReflowBehavior
 
+  public var reflowDocumentationComments: Bool
+  
   /// Determines whether to add indentation whitespace to blank lines or remove it entirely.
   ///
   /// If true, blank lines will be modified to match the current indentation level:
@@ -376,6 +379,11 @@ public struct Configuration: Codable, Equatable {
     self.reflowMultilineStringLiterals =
       try container.decodeIfPresent(MultilineStringReflowBehavior.self, forKey: .reflowMultilineStringLiterals)
       ?? defaults.reflowMultilineStringLiterals
+    
+    self.reflowDocumentationComments =
+      try container.decodeIfPresent(Bool.self, forKey: .reflowDocumentationComments)
+      ?? defaults.reflowDocumentationComments
+    
     self.indentBlankLines =
       try container.decodeIfPresent(
         Bool.self,

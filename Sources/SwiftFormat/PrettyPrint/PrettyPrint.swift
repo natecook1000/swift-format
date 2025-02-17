@@ -478,7 +478,12 @@ public class PrettyPrinter {
           diagnose(.moveEndOfLineComment, category: .endOfLineComment)
         }
       }
-      outputBuffer.write(comment.print(indent: currentIndentation))
+      if configuration.reflowDocumentationComments {
+        outputBuffer.write(
+          comment.reflow(toWidth: maxLineLength, indent: currentIndentation))
+      } else {
+        outputBuffer.write(comment.print(indent: currentIndentation))
+      }
 
     case .verbatim(let verbatim):
       outputBuffer.writeVerbatim(verbatim.print(indent: currentIndentation), length)
