@@ -11,6 +11,7 @@
 //===----------------------------------------------------------------------===//
 
 import SwiftFormat
+import XCTest
 
 final class AttributeTests: PrettyPrintTestCase {
   func testAttributeParamSpacing() {
@@ -70,6 +71,25 @@ final class AttributeTests: PrettyPrintTestCase {
       """
 
     assertPrettyPrintEqual(input: input, expected: expected, linelength: 60)
+  }
+
+  func testAttributeMultiKeywordSpacing() {
+    let input =
+      """
+      @lifetime(borrow self)
+      required init() {}
+      """
+
+    let expected =
+      """
+      @lifetime(borrow self)
+      required init() {}
+
+      """
+
+    XCTExpectFailure {
+      assertPrettyPrintEqual(input: input, expected: expected, linelength: 60)
+    }
   }
 
   func testAttributeBinPackedWrapping() {
